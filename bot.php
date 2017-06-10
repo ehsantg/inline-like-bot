@@ -1,8 +1,8 @@
 <?php
 /*
-Bot => @inlinelike_bot
-Author => Ehsan Noureddini
-Email => me@ehsann.info
+* Demo => @inlinelike_bot
+* Author => Ehsan Noureddini
+* Email => me@ehsann.info
 */
 define('API_KEY', API_KEY);
 define('WELCOME_MSG',"
@@ -96,14 +96,10 @@ if(isset($update['callback_query']) && $update['callback_query']['data']=="like"
     else{
         //select likes
         $st= $pdo->prepare("select count(*) as like_count from likes where message_id=:message_id");
-//    $st->bindParam(":chat_id",$callBackQueryChatID);
         $st->bindParam(":message_id", $callBackQueryMessageID);
         $st->execute();
         $like_count = $st->fetch()['like_count']+1; // +1 for hearts
-//    makeHTTPRequest('sendMessage',[
-//        'chat_id'=>'@testt12',
-//        'text'=>$like_count,
-//    ]);
+
         if(intval($like_count)<10){
             $likes = str_repeat('❤',$like_count);
         }
@@ -111,8 +107,6 @@ if(isset($update['callback_query']) && $update['callback_query']['data']=="like"
             $likes = $like_count . ' ' . '❤';
         }
         makeHTTPRequest("editMessageReplyMarkup",[
-//        'chat_id'=>$callBackQueryChatID,
-//        'message_id'=>$callBackQueryMessageID,
             'inline_message_id'=>$callBackQueryMessageID,
             'reply_markup' => json_encode([
                 'inline_keyboard'=>[
